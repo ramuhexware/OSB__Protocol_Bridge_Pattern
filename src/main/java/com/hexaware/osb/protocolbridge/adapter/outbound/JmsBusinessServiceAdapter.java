@@ -43,9 +43,14 @@ public class JmsBusinessServiceAdapter implements BusinessServiceAdapter {
                 message.setJMSCorrelationID(context.getCorrelationId());
                 message.setJMSReplyTo(session.createQueue(ActiveMQJmsConfig.BACKEND_REPLY_QUEUE));
 
-                // Map context headers to JMS Properties
+                // Map context headers to JMS Properties safely
                 for (Map.Entry<String, String> entry : context.getHeaders().entrySet()) {
-                    message.setStringProperty(entry.getKey(), entry.getValue());
+                    if (entry.getKey() != null && entry.getValue() != null) {
+                        String safeKey = entry.getKey().replaceAll("[^a-zA-Z0-9_]", "_");
+                        try {
+                            message.setStringProperty(safeKey, entry.getValue());
+                        } catch (Exception ignored) {}
+                    }
                 }
                 return message;
             });

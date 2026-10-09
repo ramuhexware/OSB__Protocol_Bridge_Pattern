@@ -4,7 +4,7 @@ import com.hexaware.osb.protocolbridge.domain.BridgeResponse;
 import com.hexaware.osb.protocolbridge.domain.CanonicalMessage;
 import com.hexaware.osb.protocolbridge.exception.ProtocolBridgeException;
 import com.hexaware.osb.protocolbridge.service.AuditLogService;
-import org.slf me.Logger;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
