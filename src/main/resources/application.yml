@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: osb-protocol-bridge
+  artemis:
+    mode: embedded
+    embedded:
+      enabled: true
+      queues:
+        - osb.inbound.queue
+        - osb.backend.queue
+        - osb.backend.reply.queue
+  jms:
+    template:
+      default-destination: osb.backend.queue
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    com.hexaware.osb.protocolbridge: DEBUG

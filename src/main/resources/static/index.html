@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSB Protocol Bridge Pattern Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="logo-badge">
+        <div class="logo-icon">OSB</div>
+        <div class="logo-text">
+          <h1>Protocol Bridge Pattern</h1>
+          <p>Enterprise Service Bus Transport & Transformation Engine</p>
+        </div>
+      </div>
+      <div class="header-links">
+        <a href="/swagger-ui.html" target="_blank">OpenAPI / Swagger</a>
+        <a href="/v3/api-docs" target="_blank">API Schema</a>
+      </div>
+    </header>
+
+    <!-- Architecture Visualizer -->
+    <section class="arch-diagram">
+      <div class="arch-title">OSB Message Flow Pipeline Architecture</div>
+      <div class="flow-steps">
+        <div class="flow-node">
+          <div class="node-icon">🔌</div>
+          <div class="node-title">Inbound Proxy</div>
+          <div class="node-sub">REST / SOAP / JMS / File</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-node">
+          <div class="node-icon">🏷️</div>
+          <div class="node-title">Header Stage</div>
+          <div class="node-sub">Protocol Header Mapping</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-node">
+          <div class="node-icon">🔄</div>
+          <div class="node-title">Payload Stage</div>
+          <div class="node-sub">JSON ⇄ XML/SOAP ⇄ CSV</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-node">
+          <div class="node-icon">🔀</div>
+          <div class="node-title">Protocol Router</div>
+          <div class="node-sub">Target Adapter Binding</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-node">
+          <div class="node-icon">🚀</div>
+          <div class="node-title">Business Service</div>
+          <div class="node-sub">Outbound Protocol Call</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Execution Grid -->
+    <div class="main-grid">
+      <!-- Input Workbench -->
+      <div class="card-panel">
+        <div class="card-header">
+          <div class="card-title">Bridge Test Workbench</div>
+        </div>
+
+        <div class="form-group">
+          <label>Quick Presets</label>
+          <div class="preset-pills">
+            <button class="pill-btn active" onclick="loadPreset('rest-to-jms')">1. REST ➔ JMS Queue</button>
+            <button class="pill-btn" onclick="loadPreset('rest-to-soap')">2. REST ➔ SOAP WebService</button>
+            <button class="pill-btn" onclick="loadPreset('soap-to-jms')">3. SOAP ➔ JMS Queue</button>
+            <button class="pill-btn" onclick="loadPreset('file-to-jms')">4. CSV File ➔ JMS Queue</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sourceProtocol">Source Transport Protocol</label>
+          <select id="sourceProtocol">
+            <option value="HTTP_REST">HTTP/REST (JSON)</option>
+            <option value="HTTP_SOAP">HTTP/SOAP (XML)</option>
+            <option value="JMS_QUEUE">JMS Queue (TextMessage)</option>
+            <option value="FILE_SYSTEM">File System (CSV/XML)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="targetProtocol">Target Transport Protocol</label>
+          <select id="targetProtocol">
+            <option value="JMS_QUEUE">JMS Queue (ActiveMQ)</option>
+            <option value="HTTP_SOAP">HTTP/SOAP Web Service</option>
+            <option value="HTTP_REST">HTTP/REST Service</option>
+            <option value="FILE_SYSTEM">File System Write</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="payload">Inbound Payload</label>
+          <textarea id="payload" rows="8"></textarea>
+        </div>
+
+        <button class="btn-primary" onclick="executeBridge()">🚀 Execute OSB Protocol Bridge</button>
+      </div>
+
+      <!-- Execution Console & Trace -->
+      <div class="card-panel">
+        <div class="card-header">
+          <div class="card-title">Live Pipeline Trace & Output</div>
+        </div>
+
+        <label>OSB Pipeline Stage Trace</label>
+        <div class="trace-box" id="traceBox">
+          <div class="trace-line">Ready to execute protocol transformation...</div>
+        </div>
+
+        <label>Bridged Response Payload</label>
+        <div class="response-box" id="responseBox">No response yet.</div>
+      </div>
+    </div>
+
+    <!-- Audit Log Table -->
+    <div class="card-panel">
+      <div class="card-header">
+        <div class="card-title">Audit Transaction Log</div>
+        <button class="pill-btn" onclick="fetchLogs()">🔄 Refresh Logs</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Message ID</th>
+              <th>Correlation ID</th>
+              <th>Route (Source ➔ Target)</th>
+              <th>Status</th>
+              <th>Latency</th>
+            </tr>
+          </thead>
+          <tbody id="logsTableBody">
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--text-muted);">No audit transactions recorded yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
